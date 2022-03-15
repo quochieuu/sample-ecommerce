@@ -3,6 +3,7 @@ using Ecommerce.Data.DataContext;
 using Ecommerce.Data.Entities;
 using Ecommerce.Data.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.WebApp.Areas.Admin.Controllers
 {
@@ -19,10 +20,17 @@ namespace Ecommerce.WebApp.Areas.Admin.Controllers
 
         [Route("index")]
         [Route("")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string q)
         {
-            var item = _context.Categories.OrderByDescending(p => p.Id).ToList();
-            return View(item);
+            var item = from m in _context.Categories
+                       select m;
+
+            if (!String.IsNullOrEmpty(q))
+            {
+                item = item.Where(s => s.Name.Contains(q));
+            }
+
+            return View(await item.OrderByDescending(p => p.Id).ToListAsync());
         }
 
         [Route("create")]

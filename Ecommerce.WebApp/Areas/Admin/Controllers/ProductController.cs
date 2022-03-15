@@ -100,6 +100,28 @@ namespace Ecommerce.WebApp.Areas.Admin.Controllers
             return RedirectToAction("Index", "Product");
         }
 
+        [Route("update-image/{id}")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateImage(int id, IFormFile UrlImage)
+        {
+            string POST_IMAGE_PATH = "products/images/";
+
+            if (UrlImage != null)
+            {
+
+                var image = UploadImage.UploadImageFile(UrlImage, POST_IMAGE_PATH);
+
+                Product item = _context.Products.Where(s => s.Id == id).First();
+                item.UrlImage = image;
+                _context.Update(item);
+                await _context.SaveChangesAsync();
+                return Redirect("/admin/product/update/" + id);
+            }
+            return Redirect("/admin/product/update/" + id);
+
+        }
+
         [HttpGet("delete/{id}")]
         public IActionResult Delete(int id)
         {
