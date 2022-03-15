@@ -28,8 +28,6 @@
 
         public List<Cart> Carts { get; set; }
 
-        public AppUser AppUser { get; set; }
-
         public Category Category { get; set; }
 
     }
