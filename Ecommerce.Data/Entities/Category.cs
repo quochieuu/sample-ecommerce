@@ -7,7 +7,7 @@
         public string Slug { set; get; }
         public int? ParentId { set; get; }
 
-        public bool Status { set; get; }
+        public bool? Status { set; get; }
         public List<Product> Products { get; set; }
     }
 }
