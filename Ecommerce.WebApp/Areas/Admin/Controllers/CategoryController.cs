@@ -52,5 +52,54 @@ namespace Ecommerce.WebApp.Areas.Admin.Controllers
             return View(model);
         }
 
+        [Route("update/{id}")]
+        public IActionResult Update(int id)
+        {
+            var item = _context.Categories.Where(s => s.Id == id).First();
+            return View(item);
+        }
+
+        [Route("update/{id}")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(int id, UpdateCategoryViewModel model)
+        {
+            Category item = _context.Categories.Where(s => s.Id == id).First();
+            item.Name = model.Name;
+            _context.Update(item);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Category");
+        }
+
+        [HttpGet("delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                Category item = _context.Categories.Where(s => s.Id == id).First();
+                _context.Categories.Remove(item);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (System.Exception)
+            {
+                return RedirectToAction("Index");
+            }
+
+        }
+
+        [HttpPost("delete-selected")]
+        public async Task<IActionResult> DeleteSelected(int[] listDelete)
+        {
+            foreach (int id in listDelete)
+            {
+                var doctors = await _context.Categories.FindAsync(id);
+                _context.Categories.Remove(doctors);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+
     }
 }
