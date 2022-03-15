@@ -1,4 +1,5 @@
-﻿using Ecommerce.WebApp.Models;
+﻿using Ecommerce.Data.DataContext;
+using Ecommerce.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,14 +8,17 @@ namespace Ecommerce.WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly DataDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, DataDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
+            ViewBag.ListProducts = _context.Products.OrderByDescending(c => c.Id).ToList();
             return View();
         }
 
