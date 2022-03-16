@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+<!DOCTYPE html>
 <html lang="zxx">
 
 <head>
@@ -96,8 +102,8 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__left">
                             <ul>
-                                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                                <li>Free Shipping for all Order of $99</li>
+                                <li><i class="fa fa-envelope"></i> quochieuu@gmail.com</li>
+                                <li>Miễn phí vận chuyển cho đơn từ 100k</li>
                             </ul>
                         </div>
                     </div>
@@ -109,17 +115,14 @@
                                 <a href="#"><i class="fa fa-linkedin"></i></a>
                                 <a href="#"><i class="fa fa-pinterest-p"></i></a>
                             </div>
-                            <div class="header__top__right__language">
-                                <img src="/client/img/language.png" alt="">
-                                <div>English</div>
-                                <span class="arrow_carrot-down"></span>
-                                <ul>
-                                    <li><a href="#">Spanis</a></li>
-                                    <li><a href="#">English</a></li>
-                                </ul>
-                            </div>
                             <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user"></i> Login</a>
+                                @if (SignInManager.IsSignedIn(User)) {
+                                    <a href="/dang-xuat"><i class="fa fa-user"></i> Hi, @(user.FullName ?? user.UserName)</a>
+                                } else
+                                {
+                                    <a href="/dang-nhap"><i class="fa fa-user"></i> Đăng nhập</a>
+                                }
+                                
                             </div>
                         </div>
                     </div>
@@ -137,27 +140,25 @@
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="/">Home</a></li>
-                            <li><a href="./shop-grid.html">Shop</a></li>
+                            <li><a href="/products">Products</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
+                                    <li><a href="/dang-nhap">Login</a></li>
+                                    <li><a href="/dang-ky">Register</a></li>
                                 </ul>
                             </li>
-                            <li><a href="./blog.html">Blog</a></li>
-                            <li><a href="./contact.html">Contact</a></li>
+                            <li><a href="/blog">Blog</a></li>
+                            <li><a href="/contact">Contact</a></li>
                         </ul>
                     </nav>
                 </div>
                 <div class="col-lg-3">
                     <div class="header__cart">
                         <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            @*<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>*@
+                            <li><a href="/cart"><i class="fa fa-shopping-bag"></i> <span id="cartNum">0</span></a></li>
                         </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
+                        @*<div class="header__cart__price">item: <span>$150.00</span></div>*@
                     </div>
                 </div>
             </div>
@@ -167,7 +168,31 @@
         </div>
     </header>
     <!-- Header Section End -->
+     <script src="/client/js/jquery-3.3.1.min.js"></script>
+    <script>
+        function getCartQuantity() {
+            $.ajax({
+                type: 'GET',
+                url: '/cart/count-item',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                // data: data,
+                success: function (result) {
+                    console.log(result);
+                    $("#cartNum").text(result);
+                },
+                error: function (error) {
+                    console.log('Failed ');
+                    if(error.status == 401) {
+                       $("#cartNum").text('0');
+                    }
+                }
+            })
+    }
 
+    $(document).ready(function() {
+        getCartQuantity();
+    });
+    </script>
     
     @RenderBody()
 
@@ -180,7 +205,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index.html"><img src="/client/img/logo.png" alt=""></a>
+                            <a href="/"><img src="/client/img/logo.png" alt=""></a>
                         </div>
                         <ul>
                             <li>Address: 60-49 Road 11378 New York</li>
@@ -231,7 +256,7 @@
                 <div class="col-lg-12">
                     <div class="footer__copyright">
                         <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | <a href="https://www.hieu.tech/">Hieu Tech</a>
   <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
                         <div class="footer__copyright__payment"><img src="/client/img/payment-item.png" alt=""></div>
                     </div>
