@@ -164,33 +164,7 @@
         }
       }
 
-      &:not(:nth-child(2)).active {
-        background: $sidebar-light-menu-active-bg;
-        > .nav-link {
-          .menu-title {
-            color: $sidebar-light-menu-active-color;
-            font-family: $type-1;
-            font-weight: $font-weight-semibold;
-            .sidebar-icon-only & {
-              color: $black;
-            }
-          }
-          i {
-            color: $sidebar-light-menu-active-color;
-          }
-        }
-        .sub-menu {
-          .nav-link {
-            color: $sidebar-light-submenu-active-color;
-            &.active {
-              color: $white;
-              .sidebar-icon-only & {
-                color: $black;
-              }
-            }
-          }
-        }
-      }
+      
       &.nav-profile {
         .nav-link {
           height: auto;
@@ -244,11 +218,7 @@
           line-height: 1;
           height: auto;
           border-top: 0;
-          &.active {
-            color: $sidebar-light-menu-active-color;
-            font-weight: $font-weight-semibold;
-            background: transparent;
-          }
+          
           &:hover {
             color: $sidebar-light-submenu-hover-color;
           }
@@ -284,16 +254,7 @@
             color: inherit;
           }
         }
-        &.active {
-          > .nav-link {
-            .menu-title {
-              color: $sidebar-dark-menu-active-color;
-            }
-            i {
-              color: theme-color(white);
-            }
-          }
-        }
+        
         &:hover {
           color: white;
         }
@@ -327,10 +288,6 @@
             &:before {
               color: lighten($sidebar-dark-submenu-color, 10%);
             }
-            &.active {
-              color: $sidebar-dark-menu-active-color;
-              background: transparent;
-            }
             &:hover {
               color: $sidebar-dark-submenu-hover-color;
             }
@@ -344,7 +301,7 @@
   }
 }
 
-/* style for off-canvas menu*/
+/* style for off-canvas menu */
 @media screen and (max-width: 991px) {
   .sidebar-offcanvas {
     position: fixed;
