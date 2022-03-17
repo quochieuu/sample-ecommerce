@@ -2,6 +2,7 @@
 using Ecommerce.Data.DataContext;
 using Ecommerce.Data.Entities;
 using Ecommerce.Data.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ namespace Ecommerce.WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin/category")]
+    [Authorize(Roles = "Admin")]
     public class CategoryController : Controller
     {
         private readonly DataDbContext _context;

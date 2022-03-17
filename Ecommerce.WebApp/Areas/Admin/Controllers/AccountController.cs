@@ -10,6 +10,7 @@ namespace Ecommerce.WebApp.Areas.Admin.Controllers
     [Area("Admin")]
     [Route("admin/auth")]
     [Route("admin")]
+    [Route("Account")]
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> userManager;
@@ -22,7 +23,8 @@ namespace Ecommerce.WebApp.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [Route("login")]
+        //[Route("login")]
+        [Route("Login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login()
         {
@@ -31,7 +33,8 @@ namespace Ecommerce.WebApp.Areas.Admin.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("login")]
+        //[Route("login")]
+        [Route("Login")]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)

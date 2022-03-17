@@ -8,6 +8,7 @@ namespace Ecommerce.WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin/order")]
+    [Authorize(Roles = "Admin")]
     public class OrderController : Controller
     {
         private readonly DataDbContext _context;

@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -36,11 +42,14 @@
                 <img src="/admin/template/assets/images/faces/face1.jpg" alt="profile" />
                 <!--change to offline or busy as needed-->
               </div>
-              <div class="nav-profile-text d-flex ml-0 mb-3 flex-column">
-                <span class="font-weight-semibold mb-1 mt-2 text-center">Antonio Olson</span>
-                <span class="text-secondary icon-sm text-center">$3499.00</span>
-              </div>
-            </a>
+              @if (SignInManager.IsSignedIn(User))
+                        {
+                            <div class="nav-profile-text d-flex ml-0 mb-3 flex-column">
+                                <span class="font-weight-semibold mb-1 mt-2 text-center">@(user.FullName ?? user.UserName)</span>
+                                <span class="text-secondary icon-sm text-center">Administrator</span>
+                            </div>
+                        }
+                    </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/admin">
@@ -95,34 +104,21 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../../pages/icons/mdi.html">
-              <i class="mdi mdi-contacts menu-icon"></i>
-              <span class="menu-title">Icons</span>
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic2" aria-expanded="false" aria-controls="ui-basic2">
+              <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+              <span class="menu-title">Quyền & Người dùng</span>
+              <i class="menu-arrow"></i>
             </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../../pages/forms/basic_elements.html">
-              <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-              <span class="menu-title">Forms</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../../pages/charts/chartjs.html">
-              <i class="mdi mdi-chart-bar menu-icon"></i>
-              <span class="menu-title">Charts</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../../pages/tables/basic-table.html">
-              <i class="mdi mdi-table-large menu-icon"></i>
-              <span class="menu-title">Tables</span>
-            </a>
-          </li>
-          <li class="nav-item pt-3">
-            <a class="nav-link" href="http://bootstrapdash.com/demo/plus-free/documentation/documentation.html" target="_blank">
-              <i class="mdi mdi-file-document-box menu-icon"></i>
-              <span class="menu-title">Documentation</span>
-            </a>
+            <div class="collapse" id="ui-basic2">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/auth/list-roles">Tất cả quyền</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/users">Tất cả người dùng</a>
+                </li>
+              </ul>
+            </div>
           </li>
         </ul>
       </nav>
@@ -137,16 +133,19 @@
             </button>
 
             <ul class="navbar-nav navbar-nav-right">
-              <li class="nav-item nav-profile dropdown d-none d-md-block">
-                <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                  <div class="nav-profile-text">Author </div>
-                </a>
-                <div class="dropdown-menu center navbar-dropdown" aria-labelledby="profileDropdown">
-                  <a class="dropdown-item" href="#">
-                     Đăng xuất </a>
-                </div>
-              </li>
-              <li class="nav-item nav-logout d-none d-lg-block">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item nav-profile dropdown d-none d-md-block">
+                                <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                                    <div class="nav-profile-text">@(user.FullName ?? user.UserName) </div>
+                                </a>
+                                <div class="dropdown-menu center navbar-dropdown" aria-labelledby="profileDropdown">
+                                    <a class="dropdown-item" href="/admin/auth/logout">
+                                        Đăng xuất </a>
+                                </div>
+                            </li>
+                        }
+                        <li class="nav-item nav-logout d-none d-lg-block">
                 <a class="nav-link" href="/">
                   <i class="mdi mdi-home-circle"></i>
                 </a>
